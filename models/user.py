@@ -1,13 +1,26 @@
 import boto3
 from boto3.dynamodb.conditions import Key
+import os
+from dotenv import load_dotenv
 
-dynamodb = boto3.resource(
-    'dynamodb',
-    endpoint_url='http://localhost:8000',
-    region_name='us-west-2',
-    aws_access_key_id='fakeKey',
-    aws_secret_access_key='fakeSecret'
-)
+load_dotenv()
+
+environment = os.getenv('ENVIRONMENT', 'local')
+
+if environment == 'local':
+    dynamodb = boto3.resource(
+        'dynamodb',
+        endpoint_url=os.getenv('DYNAMODB_ENDPOINT', 'http://localhost:8000'),
+        region_name=os.getenv('AWS_REGION', 'us-west-2'),                    
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', 'fakeKey'),         
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', 'fakeSecret')
+    )
+else:
+    dynamodb = boto3.resource(
+        'dynamodb',
+        region_name=os.getenv('AWS_REGION', 'us-west-2')
+    )
+
 
 user_table = dynamodb.Table('Users')
 

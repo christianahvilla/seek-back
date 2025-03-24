@@ -1,0 +1,20 @@
+{
+  "family": "seek-back-task", 
+  "networkMode": "awsvpc", 
+  "containerDefinitions": [
+    {
+      "name": "seek-back",
+      "image": "812292883945.dkr.ecr.us-east-2.amazonaws.com/seek-back:latest", 
+      "memory": 512,
+      "cpu": 256,
+      "essential": true, 
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ]
+}
