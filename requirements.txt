@@ -1,0 +1,7 @@
+Flask==2.3.2
+flask-jwt-extended==4.5.2
+boto3==1.28.62
+python-dotenv==1.0.0
+flask-swagger-ui==4.11.1
+flask-cors==4.0.0
+flask-testing==0.8.1
