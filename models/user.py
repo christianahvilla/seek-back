@@ -31,3 +31,11 @@ def get_user(email):
         }
     )
     return response.get('Item')
+
+def delete_user(email):
+    user_table.delete_item(
+        Key={
+            'PK': f'USER#{email}',
+            'SK': 'PROFILE'
+        }
+    )

@@ -1,7 +1,7 @@
 import unittest
 from flask_testing import TestCase
 from app import app
-from models.user import create_user
+from models.user import create_user, delete_user
 from flask_jwt_extended import decode_token
 
 class TestAuth(TestCase):
@@ -11,10 +11,12 @@ class TestAuth(TestCase):
         return app
 
     def setUp(self):
+        delete_user("test@example.com")
+
         create_user("test@example.com", "Test User", "password123")
 
     def tearDown(self):
-        pass
+        delete_user("test@example.com")
 
     def test_register_user(self):
         response = self.client.post('/register', json={
@@ -31,9 +33,9 @@ class TestAuth(TestCase):
             "password": "password123"
         })
         self.assertEqual(response.status_code, 200)
-        self.assertIn("access_token", response.json)
+        self.assertIn("token", response.json)
 
-        token = response.json["access_token"]
+        token = response.json["token"]
         decoded_token = decode_token(token)
         self.assertEqual(decoded_token["email"], "test@example.com")
         self.assertEqual(decoded_token["name"], "Test User")
@@ -44,7 +46,7 @@ class TestAuth(TestCase):
             "password": "wrongpassword"
         })
         self.assertEqual(response.status_code, 401)
-        self.assertIn("error", response.json)
+        self.assertIn("message", response.json)
 
 if __name__ == '__main__':
     unittest.main()
