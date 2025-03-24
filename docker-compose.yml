@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    env_file: .env  # Carga las variables de entorno desde .env
+    ports:
+      - "5000:5000"  # Ajusta el puerto según tu aplicación
+    depends_on:
+      - dynamodb-local
+
+  dynamodb-local:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
